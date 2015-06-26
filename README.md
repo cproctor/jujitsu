@@ -1,8 +1,7 @@
 Jujutsu
 -------
 
-Jujutsu is the current name for a coding assignment with which I hoped to conclude
-the 7th grade CS class this year. The game is played by two opponents, each
+Jujutsu is a game is played by two opponents, each
 starting with cards numbering from 1 to 13. There are also 13 treasure cards, 
 also numbered from 1 to 13. (Clearly, this game can be played with three suits
 of a standard deck of cards.) The treasures are shuffled, and revealed one at a
@@ -11,6 +10,9 @@ revealed at the same time. The higher card wins the treasure, unless a 1 and a
 13 are played, in which case the 1 wins. If two cards with the same number are 
 played, nobody gets the treasure. At the end of the game, the player with the 
 most treasure points wins.
+
+This is a coding assignment for students with around one year's experience in 
+Python.
 
 Card Chooser
 ============
@@ -64,3 +66,4 @@ Prerequisites
 * deconstructing large project into smaller projects
 * Error handling?
 * Types, particularly ints vs strings
+* Allowing computers to interact with each other will be new and exciting.
