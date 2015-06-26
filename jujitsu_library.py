@@ -73,12 +73,12 @@ def jujitsu_server(chooser):
         
 def is_valid_play(playerName, playerChoice, state):
     "When given a player's choice and the state, returns True if the play is legal"
-	hand = cards(playerName, state['history'])
-	if playerChoice in hand:
+    hand = cards(playerName, state['history'])
+    if playerChoice in hand:
 		return True
-	else:
-		message = "GAME OVER: {} made an illegal play: {}."
-		print(message.format(playerName, playerChoice))
+    else:
+        message = "GAME OVER: {} made an illegal play: {}."
+        print(message.format(playerName, playerChoice))
 	
 def winning_card(cardOne, cardTwo):
     "When given two cards, returns the winning card. If they are equal, returns None."
@@ -141,10 +141,9 @@ def create_remote_player(url, port):
     which uses the server."""
 
     def remote_player(state, player):
-        fullUrl = url + '/' + player
+        fullUrl = "{}:{}/jujitsu/{}".format(url, port, player)
         headers = {'content-type': 'application/json'}
         data = json.dumps(state)
-        print(fullUrl)
         response = requests.get(fullUrl, data=data, headers=headers)
         if response.status_code == 200:
             return int(response.text)
