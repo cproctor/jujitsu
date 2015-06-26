@@ -1,7 +1,7 @@
 Jujutsu
 -------
 
-Jujutsu is the current name for a coding assignment with which I will conclude
+Jujutsu is the current name for a coding assignment with which I hoped to conclude
 the 7th grade CS class this year. The game is played by two opponents, each
 starting with cards numbering from 1 to 13. There are also 13 treasure cards, 
 also numbered from 1 to 13. (Clearly, this game can be played with three suits
@@ -15,7 +15,7 @@ most treasure points wins.
 Card Chooser
 ============
 
-The card chooser function is the heart of the assignment: this is a python 
+The card chooser function is the heart of the assignment: this is a Python 
 function which is passed two arguments: a state object and this player's name, 
 and which returns an integer representing the player's choice. The rest of the 
 framework is provided; students' task is to write their own card chooser 
@@ -24,11 +24,29 @@ function. Once this is done, they can start a server which plays this function.
 The State Object
 ================
 
-treasure: the integer value of this turn's treasure
-history: an array of turn objects, each containing the following keys
-    one: the integer value of the card this player played
-    two: the integer value of the card the opponent played
+treasure: the integer value of this turn's treasure  
+history: an array of turn objects (earliest turn first), each containing the following keys  
+    playerOneName: the integer value of the card this player played  
+    playerTwoName: the integer value of the card the opponent played  
     treasure: the integer value of the turn's treasure
+
+Here is an example state object:
+
+    {
+        "treasure": 4,
+        "history": [
+            {
+                "treasure": 6,
+                "Polly": 12,
+                "Molly": 5
+            },
+            {
+                "treasure": 11,
+                "Polly": 11,
+                "Molly": 10
+            }
+        ]
+    }
 
 Helper functions
 ================
