@@ -8,8 +8,11 @@ from flask import Flask, request
 import requests
 import json
 
-def jujitsu(playerOne, playerTwo, nameOne, nameTwo):
+def jujitsu(playerOne, playerTwo, nameOne, nameTwo, print_to_screen=True):
     "When given two players, plays a jujitsu game"
+    def print_if_wanted(message):
+        if print_to_screen:
+            print(message)
 
     treasures = range(1, 14)
     random.shuffle(treasures)
@@ -21,34 +24,55 @@ def jujitsu(playerOne, playerTwo, nameOne, nameTwo):
         nameTwo: 0
     }
     for eachTreasure in treasures:
-        print("===========================================")
+        print_if_wanted("===========================================")
         state['treasure'] = eachTreasure
         playerOneChoice = playerOne(state, nameOne)
         if not is_valid_play(nameOne, playerOneChoice, state):
-            return False
+            return {
+                'winner': nameTwo,
+                'history': state['history'],
+                'error': '{} tried to play {} for treasure {}.'.format(
+                        nameOne, playerOneChoice, eachTreasure)
+            }
         playerTwoChoice = playerTwo(state, nameTwo)
         if not is_valid_play(nameTwo, playerTwoChoice, state):
-            return False
-        print("    {} plays {}".format(nameOne, playerOneChoice))
-        print("    {} plays {}".format(nameTwo, playerTwoChoice))
+            return {
+                'winner': nameOne,
+                'history': state['history'],
+                'error': '{} tried to play {} for treasure {}.'.format(
+                        nameTwo, playerTwoChoice, eachTreasure)
+            }
+        print_if_wanted("    {} plays {}".format(nameOne, playerOneChoice))
+        print_if_wanted("    {} plays {}".format(nameTwo, playerTwoChoice))
         winningCard = winning_card(playerOneChoice, playerTwoChoice)
         if winningCard is None:
-            print("Nobody wins the treasure.")
+            print_if_wanted("Nobody wins the treasure.")
         else:
             if winningCard == playerOneChoice:
                 winner = nameOne
             else:
                 winner = nameTwo
             scores[winner] += eachTreasure
-            print("    {} wins {} points!".format(winner, eachTreasure))
-        print("The score is:")
-        print("    {}: {}".format(nameOne, scores[nameOne]))
-        print("    {}: {}".format(nameTwo, scores[nameTwo]))
+            print_if_wanted("    {} wins {} points!".format(winner, eachTreasure))
+        print_if_wanted("The score is:")
+        print_if_wanted("    {}: {}".format(nameOne, scores[nameOne]))
+        print_if_wanted("    {}: {}".format(nameTwo, scores[nameTwo]))
         state['history'].append({
             'treasure': eachTreasure,
             nameOne: playerOneChoice,
             nameTwo: playerTwoChoice
         })
+
+    if scores[nameOne] == scores[nameTwo]:
+        winner = None
+    elif scores[nameOne] > scores[nameTwo]:
+        winner = nameOne
+    else:
+        winner = nameTwo
+    return {
+        'winner': winner,
+        'history': state['history']
+    }
         
 def jujitsu_server(chooser):
     """Creates a Jujitsu server which will use the provided chooser function 
